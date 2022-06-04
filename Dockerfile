@@ -1,18 +1,19 @@
 # Create ubuntu container and install ansible
 FROM ubuntu:latest AS base
 WORKDIR /usr/local/bin
-RUN apt update && \
-    apt install -y && \
-    apt-add-repository ppa:ansible/ansible && \
-    apt update && \
-    apt install -y ansible && \
-    apt clean autoclean && \
-    apt autoremove -y
+RUN apt-get update && \
+    apt-get install -y && \
+    apt-get install -y software-properties-common && \
+    apt-add-repository -y ppa:ansible/ansible && \
+    apt-get update && \
+    apt-get install -y ansible && \
+    apt-get clean autoclean && \
+    apt-get autoremove --yes
 FROM base AS max
 
 # Create max user
 RUN addgroup --gid 1000 max
-RUN adduser --gecos --uid 1000 --gid 1000 --disabled-password max
+RUN adduser --gecos max --uid 1000 --gid 1000 --disabled-password max
 USER max
 WORKDIR /home/max
 
